@@ -25,7 +25,7 @@
           justify-content: center;
           animation: pulse 2s infinite;
       }
-      p {
+      p.caption {
             margin: 0;
         }
   </style>
@@ -71,7 +71,7 @@
           
 
           
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;text-align: center;">
             <tbody>
               <tr>
                 <td>
@@ -79,7 +79,7 @@
                 </td>
               </tr>
               <tr>
-                <td  style="text-align: center;">
+                <td>
                   <div class="title" style="margin-bottom: 10px; text-align: center;">
                     <h2>Low-Cost Intelligent Robot</h2>
                     <h7 style="margin-top: 5px;"><i>End-to-end trained robotics models built from HuggingFace open-source project <a href="https://github.com/huggingface/lerobot" target="_blank">LeRobot</a></i></h7>
@@ -107,7 +107,7 @@
                       </div>
                       
                   </div>
-                  <p style="display: inline-flex; align-items: center; justify-content: center; ">
+                  <p class="caption" style="display: inline-flex; align-items: center; justify-content: center; ">
                     3 examples of successful inference from just 50 examples! Checkout my model: 
                     <a href="https://huggingface.co/cmcgartoll/lego_pick_and_place" style="width: 2em; height: 2em; margin: 0 5px; cursor: pointer;" title="Lego_pick_and_place Model" target="_blank">
                       <img src="images/huggingface.svg" alt="icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; vertical-align: middle;" 
@@ -115,7 +115,7 @@
                         onmouseout="this.style.transform='scale(1)'">
                   </a>
                   </p>
-                  <p>Trained with imitation learning using <a href="https://tonyzhaozh.github.io/aloha/" target="_blank">Action-Chunking Transformer</a></p>
+                  <p class="caption">Trained with imitation learning using <a href="https://tonyzhaozh.github.io/aloha/" target="_blank">Action-Chunking Transformer</a></p>
                   <div class="row" style="margin-inline: 20px;"></div>
                     <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 20px;">
                       <div class="coming-soon-box" style="text-align: center; width: 32%; background-color: #ccc; height: 230px; display: flex; align-items: center; justify-content: center; border-radius: 5px;"></div>
@@ -124,30 +124,35 @@
                     </div>
                   </div> 
                 
-                <p style="text-align: center; margin-top: 10px;">More Coming Soon!</p>
+                <p class="caption" style="text-align: center; margin-top: 10px;">More Coming Soon!</p>
                 </td>
               </tr>  
                 
               <tr>
                 <td>
-                  <div class="container coreSection">
+                  <div style="margin-bottom: 10px; text-align: center;">
                     <div class="title">
-                        <h2><strong>Corti-Cleaner Tool - Hand Tool to Make Cataract Surgery Safer</strong></h2>
-                        <h7>Mechatronics and Controls Lab at UCLA with <a href="http://matthewjgerber.com/index.html" target="_blank"><u>Dr. Matthew Gerber</u></a></h7>
+                        <h2>Corti-Cleaner Tool - Hand Tool to Make Cataract Surgery Safer</h2>
+                        <h7 style="margin-top: 5px;"><i>Mechatronics and Controls Lab at UCLA with <a href="http://matthewjgerber.com/index.html" target="_blank"><u>Dr. Matthew Gerber</u></a></i></h7>
                     </div>
                     <div class="row">
-                        <div class="col-6">
-                            <img class="img-fluid" style="width: 60%;" src="images/holdingTool.jpg">
-                            <p style="font-size:12px; text-align: justify;">
+                      <div class="col-6" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                        <div style="width: 48%; text-align: center;">
+                            <img class="img-fluid" style="width: 100%;" src="images/holdingTool.jpg">
+                            <p style="font-size: 12px; text-align: justify;">
                                 <strong>Figure 1.1:</strong> The body of the tool (3) fits easily inside of the hand and the size of the wire loop is operated by sliding the nub (1). Although not shown in this image, the wire loop comes out of the modified cannula (2), which is essentially a very small tube. Wiring to power and control the DC motor inside the tool (4) exits from the back of the tool.
                             </p>
-                            <img class="img-fluid" style="width: 60%;" src="images/openTool.jpg">
-                            <p style="font-size:12px; text-align: justify;">
+                        </div>
+                    
+                        <div style="width: 48%; text-align: center;">
+                            <img class="img-fluid" style="width: 100%;" src="images/openTool.jpg">
+                            <p style="font-size: 12px; text-align: justify;">
                                 <strong>Figure 1.2:</strong> The top of the body of the tool can be removed, thereby giving access to the internals. The DC motor (1) rotates the wire loop (3) and slides through the channel inside the body to retract and lengthen the wire loop. The rotation of the motor is translated through a copper coupler (2) to the wire loop (3) which ends up rotating at an axis perpendicular to the DC motor.
                             </p>
-                            <iframe width="80%" height="315" src="https://www.youtube.com/embed/-jf8qMb16i0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
                         </div>
+                        
+                        <!-- <iframe width="80%" height="315" src="https://www.youtube.com/embed/-jf8qMb16i0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                      </div>  
                         <div class="col-6">
                             <p style="font-size:16px; text-align: justify;">
                                 Cataract surgery, while considered to be a very safe procedure, experiences many of its small number of injuries during a specific portion of the surgery called phacoemulsification. During this portion of the surgery, the cloudy lens is broken down into small pieces and then sucked out of the eye through an irrigation and aspiration tool. Often, pieces of the lens are stuck to the delicate posterior wall of the lens capsule, where the lens sits inside. Tearing of the lens capsule can occur when bringing the irrigation and aspiration tool too close to the posterior wall of the capsule.
