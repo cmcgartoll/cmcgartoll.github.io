@@ -81,7 +81,7 @@
                 <td>
                   <div class="title" style="margin-bottom: 10px">
                     <h2 style="margin-bottom: 5px;">Banana-Grama-Bot</h2>
-                    <h7 style="margin-top: 5px;">Applied custom letter tile image processing to transformer robot learning model (<a href="https://tonyzhaozh.github.io/aloha/" target="_blank">ACT</a>) in fork of <a href="https://github.com/cmcgartoll/lerobot/dev" target="_blank">cmcgartoll/LeRobot</a></h7>
+                    <h7 style="margin-top: 5px;">Applied custom letter tile image processing (overlay shown in videos below)to transformer robot learning model (<a href="https://tonyzhaozh.github.io/aloha/" target="_blank">ACT</a>) in fork of <a href="https://github.com/cmcgartoll/lerobot/dev" target="_blank">cmcgartoll/LeRobot</a></h7>
                     <br>
                     <h7 style="margin-top: 5px;">Takes a letter sequence input, and the robot learns how to grasp a letter and which location to place it!</a></h7>
                   </div>
@@ -90,34 +90,34 @@
                     <div style="display: flex; justify-content: space-between; gap: 10px;">
                       <div style="display: flex; justify-content: space-between; gap: 10px;">
                           <div style="text-align: center; width: 32%; display: flex; flex-direction: column;">
-                              <video autoplay loop muted playbackRate="2" style="width: 100%; height: auto; border-radius: 5px;">
+                              <video autoplay loop muted style="width: 100%; height: auto; border-radius: 5px;">
                                   <source src="videos/top-bgb_N-1.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
                               <p style="margin: 10px 0;"><i>Letter N -> Location 1</i></p>
-                              <video autoplay loop muted playbackRate="2" style="width: 100%; height: auto; border-radius: 5px;">
+                              <video autoplay loop muted style="width: 100%; height: auto; border-radius: 5px;">
                                   <source src="videos/front-bgb_N-1.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
                           </div>
                           <div style="text-align: center; width: 32%; display: flex; flex-direction: column;">
-                              <video autoplay loop muted playbackRate="2" style="width: 100%; height: auto; border-radius: 5px;">
+                              <video autoplay loop muted style="width: 100%; height: auto; border-radius: 5px;">
                                   <source src="videos/top-bgb_A-2.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
                               <p style="margin: 10px 0;"><i>Letter A -> Location 2</i></p>
-                              <video autoplay loop muted playbackRate="2" style="width: 100%; height: auto; border-radius: 5px;">
+                              <video autoplay loop muted style="width: 100%; height: auto; border-radius: 5px;">
                                   <source src="videos/front-bgb_A-2.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
                           </div>
                           <div style="text-align: center; width: 32%; display: flex; flex-direction: column;">
-                              <video autoplay loop muted playbackRate="2" style="width: 100%; height: auto; border-radius: 5px;">
+                              <video autoplay loop muted style="width: 100%; height: auto; border-radius: 5px;">
                                   <source src="videos/top-bgb_P-3.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
                               <p style="margin: 10px 0;"><i>Letter P -> Location 3</i></p>
-                              <video autoplay loop muted playbackRate="2" style="width: 100%; height: auto; border-radius: 5px;">
+                              <video autoplay loop muted style="width: 100%; height: auto; border-radius: 5px;">
                                   <source src="videos/front-bgb_P-3.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -125,7 +125,10 @@
                       </div>
                   </div>
                   <p class="caption" style="display: inline-flex; align-items: center; justify-content: center; ">
-                    Videos in 2x speed. Trained on 150 examples on vast.ai GPU (highly recommend)! Checkout my model: 
+                    Top down videos are shown with the image overlay used for training and fed through the model during inference.
+                  </p>
+                  <p class="caption" style="display: inline-flex; align-items: center; justify-content: center; ">
+                    Checkout my model: 
                     <a href="https://huggingface.co/cmcgartoll/banana-grama-bot" style="display: inline-flex; align-items: center; justify-content: center; width: 2em; height: 2em; margin: 0 5px; cursor: pointer;" title="Lego_pick_and_place Model" target="_blank">
                       <img src="images/huggingface.svg" alt="icon" style="width: 1.5em; height: 1.5em; vertical-align: middle;" 
                         onmouseover="this.style.transform='scale(1.3)'" 
