@@ -91,32 +91,69 @@
               <tr>
                 <td>
                   <div class="title" style="margin-bottom: 10px">
-                    <h2 style="margin-bottom: 5px;">CrowdBot - Crowdsourcing Quality Robot Foundational Model Training Data</h2>
-                    <h7 style="margin: 5px 0;"><i>Currently in progress, will be released <a href="https://github.com/crowdbotproject">here</a>! My friend Philip Fung and I working on a project to standardize training data for hackers, engineers, and researchers and make it as low-cost as possible. I have designed standardized hardware (camera locations, lighting, etc.) merged into the <b>official</b> <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/Camera_Holder_Alternate_MF">SO-100</a> arm repo for solo and bimanual manipulation.</i></h7>
+                    <h2 style="margin-bottom: 5px;">Gentle Robotics - Teleoperation Platform for Humanoids</h2>
+                    <h7 style="margin: 5px 0;">
+                      <i>
+                        Building a robust teleoperation platform for humanoid robots, enabling intuitive and precise remote control for research and real-world applications.<br>
+                        Check it out on <a href="https://x.com/gentlerobotics" target="_blank"><b>@gentlerobots</b></a> on 𝕏 for updates!
+                      </i>
+                    </h7>
                     <br>
                   </div>
                   <div class="row" style="margin: 0 20px;">
-                    <h3 style="text-align: center; margin-bottom: 15px;">Rev 1 Bi-Manual CrowdBot Setup!</h3>
-                    <div style="text-align: center;">
-                      <div style="display: flex; justify-content: space-between; gap: 10px;">
-                        <div style="overflow: hidden; border-radius: 5px; max-width: 48%;">
-                          <img src="images/crowd_bot_rev_1.jpg" style="width: 100%; height: auto; object-fit: cover;">
-                        </div>
-                        <div style="overflow: hidden; border-radius: 5px; max-width: 48%;">
-                          <img src="images/crowd_bot_cam.png" style="width: 100%; height: auto; object-fit: cover;">
-                        </div>
+                    <div style="overflow: hidden; border-radius: 5px; max-width: 80%; margin-top: 15px; display: flex; flex-direction: column; align-items: center; margin-left: auto; margin-right: auto;">
+                      <video autoplay loop muted controls style="width: 100%; height: auto; object-fit: cover; display: block; border-radius: 5px;">
+                        <source src="videos/g1_teleop_pot.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                      <p style="margin: 10px 0;"><i>Teleoperating the G1 to pick up a pot (in headset + outside views)</i></p>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px; margin-bottom: 20px; align-items: stretch;">
+                      <div style="overflow: hidden; border-radius: 5px; max-width: 63%; flex: 1 1 0; display: flex; flex-direction: column; align-items: center; height: 100%;">
+                        <video autoplay loop muted controls style="width: 100%; height: 500px; object-fit: cover; display: block; border-radius: 5px;">
+                          <source src="videos/g1_outdoor_teleop.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                        <p style="margin: 10px 0;"><i>Outdoor teleoperation of the G1</i></p>
                       </div>
-                      <p style="margin: 10px 0;"><i>Tri-camera view inspired by ALOHA (Image courtesy of Philip) </i></p>
+                      <div style="overflow: hidden; border-radius: 5px; max-width: 30%; flex: 1 1 0; display: flex; flex-direction: column; align-items: center; height: 100%;">
+                        <video autoplay loop muted controls style="width: 100%; height: 500px; object-fit: cover; border-radius: 5px;">
+                          <source src="videos/g1_hand_teleop.MP4" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                        <p style="margin: 10px 0;"><i>Metaquest G1 hand teleoperation</i></p>
+                      </div>
                     </div>
                   </div>
-                  <p class="caption" style="display: inline-flex; align-items: center; justify-content: center; ">
-                    <b>Community datasets + models:</b> 
-                    <a href="https://huggingface.co/crowdbot" style="display: inline-flex; align-items: center; justify-content: center; width: 2em; height: 2em; margin: 0 5px; cursor: pointer;" title="Lego_pick_and_place Model" target="_blank">
-                      <img src="images/huggingface.svg" alt="icon" style="width: 1.5em; height: 1.5em; vertical-align: middle;" 
-                        onmouseover="this.style.transform='scale(1.3)'" 
-                        onmouseout="this.style.transform='scale(1)'">
-                    </a>
-                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="title" style="margin-bottom: 10px">
+                    <h2 style="margin-bottom: 5px;">CrowdBot - Crowdsourcing Quality Robot Foundational Model Training Data</h2>
+                    <h7 style="margin: 5px 0;"><i>Initial release complete! My friend Philip Fung and I working on a project to standardize training data for hackers, engineers, and researchers and make it as low-cost as possible. I have designed standardized hardware (camera locations, lighting, etc.) merged into the <b>official</b> <a href="https://github.com/TheRobotStudio/SO-ARM100/tree/main/Optional/Overhead_Cam_Mount_Webcam">SO-100</a> arm repo for solo and bimanual manipulation.</i></h7>
+                    <br>
+                  </div>
+                  <div class="row" style="margin: 0 20px;">
+                    <div style="overflow: hidden; border-radius: 5px; max-width: 80%; margin-top: 15px; display: flex; flex-direction: column; align-items: center; margin-left: auto; margin-right: auto;">
+                      <video autoplay loop muted controls style="width: 100%; height: auto; object-fit: cover; display: block; border-radius: 5px;">
+                        <source src="videos/towel_fold.MP4" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                      <p style="margin: 10px 0;"><i>Towel folding demo!</i></p>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="display: flex; justify-content: space-between; gap: 20px;">
+                        <div style="text-align: center; width: 50%;">
+                          <img src="images/crowd_bot_1.JPG" style="width: 100%; height: auto; border-radius: 5px;">
+                        </div>
+                        <div style="text-align: center; width: 50%;">
+                          <img src="images/crowd_bot_2.JPG" style="width: 100%; height: auto; border-radius: 5px;">
+                        </div>
+                      </div>
+                    
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -131,7 +168,7 @@
                     <div style="display: flex; justify-content: space-between; gap: 10px;">
                       <div style="text-align: center; width: 50%; display: flex; flex-direction: column;">
                         <div style="overflow: hidden; border-radius: 5px;">
-                            <video autoplay loop muted style="width: 100%; height: auto; object-fit: cover;">
+                            <video autoplay loop muted style="width: 100%; height: auto; object-fit: cover; border-radius: 5px;">
                                   <source src="videos/cube-sorter-humanoids-summit.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -140,7 +177,7 @@
                       </div>
                       <div style="text-align: center; width: 50%; display: flex; flex-direction: column;">
                           <div style="overflow: hidden; border-radius: 5px; height: 100%;">
-                              <img src="images/humanoids_summit_team.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                              <img src="images/humanoids_summit_team.jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 5px;">
                           </div>
                           <p style="margin: 10px 0;"><i>Great time with the Hugging Face Booth Team!</i></p>
                       </div>
@@ -151,7 +188,7 @@
                     <div style="display: flex; justify-content: space-between; gap: 10px;">
                       <div style="text-align: center; width: 50%; display: flex; flex-direction: column;">
                           <div style="overflow: hidden; border-radius: 5px;">
-                              <video autoplay loop muted style="width: 100%; height: auto; object-fit: cover;">
+                              <video autoplay loop muted style="width: 100%; height: auto; object-fit: cover; border-radius: 5px;">
                                   <source src="videos/phone-cube-sorter-successful.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -160,7 +197,7 @@
                       </div>
                       <div style="text-align: center; width: 50%; display: flex; flex-direction: column;">
                           <div style="overflow: hidden; border-radius: 5px;">
-                              <video autoplay loop muted style="width: 100%; height: auto; object-fit: cover;">
+                              <video autoplay loop muted style="width: 100%; height: auto; object-fit: cover; border-radius: 5px;">
                                   <source src="videos/phone-cube-sorter-retry.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -193,7 +230,7 @@
                     <div style="display: flex; justify-content: space-between; gap: 10px;">
                       <div style="text-align: center; width: 32%; display: flex; flex-direction: column;">
                           <div style="overflow: hidden; border-radius: 5px;">
-                              <video autoplay loop muted style="width: 130%; height: 130%; object-fit: cover; object-position: 50% 0%; margin: 0% -15% -15% -15%;">
+                              <video autoplay loop muted style="width: 130%; height: 130%; object-fit: cover; object-position: 50% 0%; margin: 0% -15% -15% -15%; border-radius: 5px;">
                                   <source src="videos/top-bgb_N-1.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -202,7 +239,7 @@
                       </div>
                       <div style="text-align: center; width: 32%; display: flex; flex-direction: column;">
                           <div style="overflow: hidden; border-radius: 5px;">
-                              <video autoplay loop muted style="width: 130%; height: 130%; object-fit: cover; object-position: 50% 0%; margin: 0% -15% -15% -15%;">
+                              <video autoplay loop muted style="width: 130%; height: 130%; object-fit: cover; object-position: 50% 0%; margin: 0% -15% -15% -15%; border-radius: 5px;">
                                   <source src="videos/top-bgb_A-2.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -211,7 +248,7 @@
                       </div>
                       <div style="text-align: center; width: 32%; display: flex; flex-direction: column;">
                           <div style="overflow: hidden; border-radius: 5px;">
-                              <video autoplay loop muted style="width: 130%; height: 130%; object-fit: cover; object-position: 50% 0%; margin: 0% -15% -15% -15%;">
+                              <video autoplay loop muted style="width: 130%; height: 130%; object-fit: cover; object-position: 50% 0%; margin: 0% -15% -15% -15%; border-radius: 5px;">
                                   <source src="videos/top-bgb_P-3.mp4" type="video/mp4">
                                   Your browser does not support the video tag.
                               </video>
@@ -221,7 +258,7 @@
                   </div>
                   <div style="text-align: center; margin: 20px 0;">
                       <div style="overflow: hidden; border-radius: 5px; max-width: 50%; margin: 0 auto;">
-                          <video autoplay loop muted style="width: 110%; height: 110%; object-fit: cover; object-position: 50% 0%; margin: -5% -15% 0% -15%;">
+                          <video autoplay loop muted style="width: 110%; height: 110%; object-fit: cover; object-position: 50% 0%; margin: -5% -15% 0% -15%; border-radius: 5px;">
                               <source src="videos/front-bgb_L-1-regrab.mp4" type="video/mp4">
                               Your browser does not support the video tag.
                           </video>
@@ -300,13 +337,13 @@
                   <div class="row" style="margin: 0 20px;">
                     <div style="display: flex; justify-content: space-between; gap: 10px; align-items: center;">
                       <div style="text-align: center; width: 32%;">
-                        <img style="border-radius: 5x;width: 100%; " src="images/mm_bracket2.jpg">
+                        <img style="border-radius: 5px;width: 100%; " src="images/mm_bracket2.jpg">
                       </div>
                       <div style="text-align: center; width: 32%;">
-                        <img style="border-radius: 5x;width: 100%; " src="images/mm_bracket.png">
+                        <img style="border-radius: 5px;width: 100%; " src="images/mm_bracket.png">
                       </div>
                       <div style="text-align: center; width: 32%;">
-                        <img style="border-radius: 5x;width: 100%; " src="images/mm_bracket3.jpg">
+                        <img style="border-radius: 5px;width: 100%; " src="images/mm_bracket3.jpg">
                       </div>
                   </div>
                 </td>
@@ -321,14 +358,14 @@
                   <div class="row">
                     <div class="col-6" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 0 20px">
                       <div style="width: 48%; text-align: center;">
-                          <img style="border-radius: 5x;width: 100%; " src="images/holdingTool.jpg">
+                          <img style="border-radius: 5px;width: 100%; " src="images/holdingTool.jpg">
                           <!-- <p style="font-size: 12px; text-align: justify;">
                               The body of the tool (3) fits easily inside of the hand and the size of the wire loop is operated by sliding the nub (1). Although not shown in this image, the wire loop comes out of the modified cannula (2), which is essentially a very small tube. Wiring to power and control the DC motor inside the tool (4) exits from the back of the tool.
                           </p> -->
                       </div>
                   
                       <div style="width: 48%; text-align: center;">
-                          <img style="border-radius: 5x;width: 100%; " src="images/openTool.jpg">
+                          <img style="border-radius: 5px;width: 100%; " src="images/openTool.jpg">
                           <!-- <p style="font-size: 12px; text-align: justify;">
                               The top of the body of the tool can be removed, thereby giving access to the internals. The DC motor (1) rotates the wire loop (3) and slides through the channel inside the body to retract and lengthen the wire loop. The rotation of the motor is translated through a copper coupler (2) to the wire loop (3) which ends up rotating at an axis perpendicular to the DC motor.
                           </p> -->
@@ -362,21 +399,21 @@
                           <h2><strong>BruinBot Payload Dispensing System</strong></h2>
                           <h7> Payload Subteam Member for the <a href="https://www.asmebruins.com/x1-robotics" target="_blank"><u>X1 Robotics Club</u></a> at UCLA</h7>
                       </div>
-                      <img class="img-fluid" style="width: 60%;" src="images/BruinBotOverview.png">
+                      <img class="img-fluid" style="width: 60%; border-radius: 5px;" src="images/BruinBotOverview.png">
                       <p style="font-size:12px; text-align: justify;">
                           <strong>Figure 3.1:</strong> The BruinBot is a small campus-roving robot. The BruinBot is split into 6 major subteams and I was a member of the payload subteam.
                       </p>
                       <div class="row">
                           <div class="col-6">
-                              <img class="img-fluid" style="width: 60%;" src="images/BruinBotPayloadOverview.png">
+                              <img class="img-fluid" style="width: 60%; border-radius: 5px;" src="images/BruinBotPayloadOverview.png">
                               <p style="font-size:12px; text-align: justify;">
                                   <strong>Figure 3.2:</strong> The payload system is split into 5 main sections and I was mainly responsible for section 2. Section 1 is the container that housed stacks of granola bars (each different colored container in section 1 is a different vertical stack of granola bars). Section 2 is the system for pushing the granola bars out of section 1 and onto the conveyor belt (section 5). Sections 3 and 4 are the arm and hand that catch the granola bars that come off of the conveyor belt and bring them up for students to grab. Section 5 is the conveyor belt that brings the bars from section 2 to the hand.
                               </p>
-                              <img class="img-fluid" style="width: 60%;" src="images/BruinBotBackOverview.png">
+                              <img class="img-fluid" style="width: 60%; border-radius: 5px;" src="images/BruinBotBackOverview.png">
                               <p style="font-size:12px; text-align: justify;">
                                   <strong>Figure 3.3:</strong> This is the back view of section 2 pushing the granola bar out of section 1. These are usually attached to the walls of the chassis, but the chassis is not shown so that the payload section is visable.
                               </p>
-                              <img class="img-fluid" style="width: 60%;" src="images/LinearRail.png">
+                              <img class="img-fluid" style="width: 60%; border-radius: 5px;" src="images/LinearRail.png">
                               <p style="font-size:12px; text-align: justify;">
                                   <strong>Figure 3.4:</strong> This figure shows the an exploed view of the linear track that I designed to allow the linear pusher (shown in figure 3.5) to move from side to side. This is operated by a stepper motor that runs a timing belt that moves the linear pusher, supported by the three linear bearings, along the two smooth rods.
                               </p>
@@ -390,7 +427,7 @@
                                   <br><br>
                                   Sadly, due to COVID-19 the last quarter of my second year was completely remote, we were only able to finish designing Bruinbot. All of the labs closed down and are still closed down so we have not been able to build Bruinbot. Hopefully UCLA will reopen soon and we will be able to get back to safely building Bruinbot!
                               </p>
-                              <img class="img-fluid" style="width: 60%;" src="images/LinearPusher.png">
+                              <img class="img-fluid" style="width: 60%; border-radius: 5px;" src="images/LinearPusher.png">
                               <p style="font-size:12px; text-align: justify;">
                                   <strong>Figure 3.5:</strong> Linear Pusher: This figure shows the rack and pinion linear pusher that pushes the granola bars out of section 1. Although not shown, the stepper motor is attached to the pinion by a timing belt.
                               </p>
