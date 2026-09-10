@@ -159,7 +159,11 @@
 
   function eligibleImage(img) {
     if (img.closest('[data-ascii-peek]')) return false;
-    if (/\.svg($|\?)/i.test(img.getAttribute('src') || '')) return false;
+    const src = img.getAttribute('src') || '';
+    if (/\.svg($|\?)/i.test(src)) return false;
+    // GIFs are skipped: drawImage only samples the frame on screen, so the
+    // overlay reads as a frozen still rather than the animation playing.
+    if (/\.gif($|\?)/i.test(src)) return false;
     return img.offsetWidth >= MIN_SIZE && img.offsetHeight >= MIN_SIZE;
   }
 
@@ -167,9 +171,7 @@
     document.querySelectorAll('[data-ascii-peek]').forEach(setupImagePeek);
     document.querySelectorAll('video').forEach((v) => attachOverlay(v, true));
     document.querySelectorAll('img').forEach((img) => {
-      // GIFs keep animating, so they get the live loop; stills render once.
-      const animated = /\.gif($|\?)/i.test(img.getAttribute('src') || '');
-      const attach = () => { if (eligibleImage(img)) attachOverlay(img, animated); };
+      const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
       if (img.complete) attach();
       else img.addEventListener('load', attach, { once: true });
     });
