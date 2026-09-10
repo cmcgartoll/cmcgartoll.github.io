@@ -1,5 +1,3 @@
-/* Minimal reset — readable measure and sane spacing, nothing decorative. */
-
 body {
   max-width: 42rem;
   margin: 0 auto;
@@ -9,54 +7,60 @@ body {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: inherit;
   font-weight: 400;
   margin: 0 0 1rem;
 }
 
-img,
-video {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-figure {
-  margin: 1.5rem 0;
+/* Photo floats so the intro text wraps beside it; the caption is absolute so it
+   does not add to the float's height and push that wrap point down. */
+#pfp-fig {
+  float: right;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 0 1rem 1rem;
 }
 
 #pfp {
+  display: block;
   width: 200px;
   height: 200px;
   object-fit: cover;
-  float: right;
-  margin: 0 0 1rem 1.5rem;
 }
 
-nav {
-  clear: both;
+#pfp-fig figcaption {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  line-height: 1.2;
+  text-align: center;
+  font-style: italic;
 }
 
-.gifs {
+.lead-in {
+  margin-bottom: 0.2rem;
+}
+
+/* Zero top margin so it does not collapse with .lead-in's smaller one. */
+.timeline {
+  margin-top: 0;
+  list-style-type: square;
+}
+
+.clips {
   display: flex;
   gap: 0.5rem;
 }
 
-.gifs img {
+.clips video {
   width: 50%;
 }
 
-nav ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-/* ASCII hover overlay — positioning only. */
-
-.ascii-video-text {
+/* ASCII hover overlay. */
+.ascii-overlay {
   position: absolute;
   margin: 0;
   padding: 0;
@@ -74,6 +78,6 @@ nav ul {
   transition: opacity .2s ease-in-out;
 }
 
-.ascii-video-text.visible {
+.ascii-overlay.visible {
   opacity: 1;
 }

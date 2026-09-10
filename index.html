@@ -15,43 +15,56 @@
 
   <body>
     <header>
-      <img id="pfp" src="images/pfp_door.jpg" alt="Conor Mc Gartoll">
+      <figure id="pfp-fig">
+        <img id="pfp" src="images/pfp_door.jpg" alt="Conor Mc Gartoll"
+             data-ascii-mask="images/pfp_door_mask.png" data-ascii-invert data-ascii-gamma="2.2">
+        <figcaption>cool door</figcaption>
+      </figure>
 
-      <h1>Conor Mc Gartoll</h1>
-
-      <p>
-        I'm currently a robotics research intern at Amazon's Industrial Robotics Group and a
-        graduate student in the CSE department at UCSD, researching generalizable manipulation in
-        <a href="https://xiaolonw.github.io/">Xiaolong Wang's Lab</a>.
-      </p>
+      <h1>Conor Mc Gartoll &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; <a href="reading.html">reading</a></h1>
 
       <p>
-        I was previously a software engineer for the Powertrain Data and Automation Team at
-        <a href="https://lucidmotors.com/">Lucid Motors</a>. I completed my B.S. at UCLA, where I
-        worked on surgical robotics research in the
-        <a href="http://www.maclab.seas.ucla.edu/">Mechatronics and Controls Lab</a> advised by
-        <a href="http://matthewjgerber.com/">Dr. Matthew Gerber</a> and
-        <a href="https://www.seas.ucla.edu/~ttsao/">Prof. Tsu-Chin Tsao</a>.
+        I'm a researcher and engineer deeply interested in foundational robot dexterity and enabling it through simulation. I previously studied engineering at UCLA and am studying CS at UCSD.
       </p>
 
-      <nav>
-        <ul>
-          <li><a href="mailto:cmgartoll@ucsd.edu">Email</a></li>
-          <li><a href="https://x.com/cmcgartoll">X (Twitter)</a></li>
-          <li><a href="https://scholar.google.com/citations?user=JLJN7v0AAAAJ">Google Scholar</a></li>
-          <li><a href="https://github.com/cmcgartoll/">Github</a></li>
-          <li><a href="http://www.linkedin.com/in/cmcgartoll">LinkedIn</a></li>
-          <li><a href="docs/ConorResume.pdf" target="_blank" rel="noopener">Resume</a></li>
-        </ul>
-      </nav>
+      <p class="lead-in">What i've been up to:</p>
+      <ul class="timeline">
+        <li>Research Intern @ Amazon IRG &mdash; Present</li>
+        <li>Researcher @ <a href="https://xiaolonw.github.io/">Wang Lab</a> &mdash; 2025-Present</li>
+        <li>Software Eng @ Lucid Motors &mdash; 2022-2025</li>
+        <!-- <li>Battery Dev Intern @ Rivian &mdash; 2021</li>
+        <li>Researcher @ <a href="http://www.maclab.seas.ucla.edu/">MACLab</a> &mdash; 2020-2022</li> -->
+      </ul>
+
+      <p>Feel free to reach out to me at <a href="https://x.com/cmcgartoll">cmcgartoll</a> on Twitter</p>
     </header>
 
     <main>
-      <div class="gifs">
-        <img src="images/floating_hand_policy.gif" alt="Dextrous hand manipulation policy">
-        <img src="images/towel_fold.gif" alt="Towel folding demo">
+      <div class="clips">
+        <video autoplay loop muted playsinline>
+          <source src="videos/floating_hand_policy_web.mp4" type="video/mp4">
+        </video>
+        <video autoplay loop muted playsinline>
+          <source src="videos/towel_fold_web.mp4" type="video/mp4">
+        </video>
       </div>
     </main>
 
+    <script>
+      // Browsers pause autoplaying video while the page is hidden, and a page
+      // restored from the back/forward cache can come back paused. Nudge them.
+      (function () {
+        function resume() {
+          document.querySelectorAll('video[autoplay]').forEach(function (v) {
+            if (v.paused) v.play().catch(function () {});
+          });
+        }
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden) resume();
+        });
+        window.addEventListener('pageshow', resume);
+        window.addEventListener('focus', resume);
+      })();
+    </script>
   </body>
 </html>
