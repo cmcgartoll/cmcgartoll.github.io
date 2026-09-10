@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Font options</title>
+    <style>
+      body { margin: 0; padding: 0; }
+
+      #bar {
+        position: sticky; top: 0; z-index: 10;
+        background: #fff; border-bottom: 1px solid #ddd;
+        padding: 12px 16px;
+        font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+        display: flex; flex-wrap: wrap; gap: 18px; align-items: center;
+      }
+      #bar label { display: flex; gap: 6px; align-items: center; }
+      #bar select { font: inherit; padding: 3px; max-width: 15rem; }
+      #bar button { font: inherit; padding: 3px 8px; cursor: pointer; }
+      #bar .hint { color: #888; }
+
+      #sample {
+        max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 3rem;
+        line-height: 1.6;
+      }
+      #pfp {
+        width: 200px; height: 200px; object-fit: cover;
+        float: right; margin: 0 0 1rem 1.5rem;
+      }
+      #sample nav { clear: both; }
+      #sample h1 { font-size: 1.5rem; font-weight: 400; margin: 0 0 1rem; }
+      #sample nav ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .75rem; }
+
+      hr.div { max-width: 42rem; margin: 0 auto; border: 0; border-top: 1px solid #ddd; }
+
+      #grid { max-width: 60rem; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+      #grid h2 {
+        font: 600 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+        text-transform: uppercase; letter-spacing: .1em; color: #888;
+        margin: 2.5rem 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid #eee;
+      }
+      #grid h2:first-child { margin-top: 0; }
+      .card { padding: 14px 0; border-bottom: 1px solid #f0f0f0; }
+      .card .meta {
+        font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+        color: #999; margin-bottom: 8px;
+        display: flex; gap: 10px; align-items: center;
+      }
+      .card .meta button { font: inherit; padding: 2px 6px; cursor: pointer; }
+      .card .name { font-size: 30px; line-height: 1.2; }
+      .card .line { font-size: 16px; line-height: 1.5; margin-top: 4px; }
+      .card .abc { font-size: 13px; color: #777; margin-top: 6px; }
+    </style>
+  </head>
+  <body>
+    <div id="bar">
+      <label>font <select id="fSel"></select></label>
+      <span class="hint">scroll down for the full specimen list</span>
+    </div>
+
+    <div id="sample">
+      <img id="pfp" src="images/conor_mcgartoll.jpg" alt="Conor Mc Gartoll">
+      <h1>Conor Mc Gartoll</h1>
+      <p>
+        I'm currently a robotics research intern at Amazon's Industrial Robotics Group and a
+        graduate student in the CSE department at UCSD, researching generalizable manipulation in
+        <a href="https://xiaolonw.github.io/">Xiaolong Wang's Lab</a>.
+      </p>
+      <p>
+        I was previously a software engineer for the Powertrain Data and Automation Team at
+        <a href="https://lucidmotors.com/">Lucid Motors</a>. I completed my B.S. at UCLA, where I
+        worked on surgical robotics research in the
+        <a href="http://www.maclab.seas.ucla.edu/">Mechatronics and Controls Lab</a> advised by
+        <a href="http://matthewjgerber.com/">Dr. Matthew Gerber</a> and
+        <a href="https://www.seas.ucla.edu/~ttsao/">Prof. Tsu-Chin Tsao</a>.
+      </p>
+      <nav>
+        <ul>
+          <li><a href="#">Email</a></li><li><a href="#">X (Twitter)</a></li>
+          <li><a href="#">Google Scholar</a></li><li><a href="#">Github</a></li>
+          <li><a href="#">LinkedIn</a></li><li><a href="#">Resume</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <hr class="div">
+    <div id="grid"></div>
+
+    <script>
+      // [display name, css stack, google family or null for system faces]
+      // Only faces that render consistently in Chrome and other browsers on any
+      // OS: the classic web-safe set, plus webfonts (which ship the file).
+      var FONTS = {
+        'sans — web safe (installed everywhere)': [
+          ['Arial  ← allshire.org', "Arial, Helvetica, sans-serif", null],
+          ['Helvetica  ← patrickcollison.com', "Helvetica, Arial, sans-serif", null],
+          ['Verdana', "Verdana, Geneva, sans-serif", null],
+          ['Tahoma', "Tahoma, Geneva, sans-serif", null],
+          ['Trebuchet MS', "'Trebuchet MS', Tahoma, sans-serif", null]
+        ],
+        'serif — web safe (installed everywhere)': [
+          ['Georgia', "Georgia, 'Times New Roman', serif", null],
+          ['Times New Roman', "'Times New Roman', Times, serif", null]
+        ],
+        'sans — webfonts (identical everywhere)': [
+          ['Inter', "'Inter', system-ui, sans-serif", 'Inter'],
+          ['IBM Plex Sans', "'IBM Plex Sans', system-ui, sans-serif", 'IBM+Plex+Sans'],
+          ['Public Sans', "'Public Sans', system-ui, sans-serif", 'Public+Sans'],
+          ['Libre Franklin', "'Libre Franklin', system-ui, sans-serif", 'Libre+Franklin'],
+          ['Work Sans', "'Work Sans', system-ui, sans-serif", 'Work+Sans'],
+          ['DM Sans', "'DM Sans', system-ui, sans-serif", 'DM+Sans'],
+          ['Roboto', "'Roboto', system-ui, sans-serif", 'Roboto'],
+          ['Open Sans', "'Open Sans', system-ui, sans-serif", 'Open+Sans'],
+          ['Lato', "'Lato', system-ui, sans-serif", 'Lato'],
+          ['Source Sans 3', "'Source Sans 3', system-ui, sans-serif", 'Source+Sans+3']
+        ],
+        'serif — webfonts (identical everywhere)': [
+          ['Source Serif 4', "'Source Serif 4', Georgia, serif", 'Source+Serif+4'],
+          ['PT Serif', "'PT Serif', Georgia, serif", 'PT+Serif'],
+          ['Lora', "'Lora', Georgia, serif", 'Lora'],
+          ['EB Garamond', "'EB Garamond', Georgia, serif", 'EB+Garamond'],
+          ['Literata', "'Literata', Georgia, serif", 'Literata'],
+          ['Crimson Pro', "'Crimson Pro', Georgia, serif", 'Crimson+Pro'],
+          ['Libre Baskerville', "'Libre Baskerville', Georgia, serif", 'Libre+Baskerville'],
+          ['Merriweather', "'Merriweather', Georgia, serif", 'Merriweather']
+        ],
+        'mono': [
+          ['Courier New  (web safe)', "'Courier New', Courier, monospace", null],
+          ['IBM Plex Mono', "'IBM Plex Mono', ui-monospace, monospace", 'IBM+Plex+Mono'],
+          ['JetBrains Mono', "'JetBrains Mono', ui-monospace, monospace", 'JetBrains+Mono'],
+          ['Roboto Mono', "'Roboto Mono', ui-monospace, monospace", 'Roboto+Mono']
+        ]
+      };
+
+      // One <link> per family so a single bad request can't take the rest down.
+      Object.keys(FONTS).forEach(function (group) {
+        FONTS[group].forEach(function (f) {
+          if (!f[2]) return;
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = 'https://fonts.googleapis.com/css2?family=' + f[2] +
+                      ':wght@400;700&display=swap';
+          document.head.appendChild(link);
+        });
+      });
+
+      var sample = document.getElementById('sample');
+      var fSel = document.getElementById('fSel');
+      var grid = document.getElementById('grid');
+
+      var BIO = "I'm a robotics research intern at Amazon's Industrial Robotics Group " +
+                "and a graduate student in the CSE department at UCSD.";
+
+      Object.keys(FONTS).forEach(function (group) {
+        var og = document.createElement('optgroup');
+        og.label = group;
+        FONTS[group].forEach(function (f) {
+          var o = document.createElement('option');
+          o.value = f[1]; o.textContent = f[0];
+          og.appendChild(o);
+        });
+        fSel.appendChild(og);
+
+        var h = document.createElement('h2');
+        h.textContent = group;
+        grid.appendChild(h);
+
+        FONTS[group].forEach(function (f) {
+          var card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML =
+            '<div class="meta"><span>' + f[0] + '</span>' +
+            '<button data-use>use this</button></div>' +
+            '<div class="name">Conor Mc Gartoll</div>' +
+            '<div class="line">' + BIO + '</div>' +
+            '<div class="abc">ABCDEFGHIJKLM abcdefghijklm 0123456789 &mdash; SO-100, G1, 2x speed</div>';
+          card.querySelectorAll('.name, .line, .abc').forEach(function (el) {
+            el.style.fontFamily = f[1];
+          });
+          card.querySelector('[data-use]').onclick = function () { setFont(f[1]); };
+          grid.appendChild(card);
+        });
+      });
+
+      function setFont(stack) {
+        fSel.value = stack;
+        sample.style.fontFamily = stack;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      fSel.onchange = function () { setFont(fSel.value); };
+
+      sample.style.fontFamily = "Georgia, 'Times New Roman', serif";
+      fSel.value = "Georgia, 'Times New Roman', serif";
+    </script>
+  </body>
+</html>
