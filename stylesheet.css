@@ -181,3 +181,26 @@ span.highlight {
 .ascii-peek-wrap:focus-within .ascii-peek-text {
   opacity: 1;
 }
+
+.ascii-video-text {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #ffffff;
+  color: #111111;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
+  text-align: center;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease-in-out;
+}
+
+.ascii-video-text.visible {
+  opacity: 1;
+}
