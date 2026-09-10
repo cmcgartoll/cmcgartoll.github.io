@@ -8,6 +8,7 @@
   const GAMMA = 2.5;
   const FRAME_MS = 1000 / 20;
   const MIN_SIZE = 100;
+  const TOUCH = window.matchMedia && window.matchMedia('(hover: none)').matches;
 
   const CELL_ASPECT = 0.5;
 
@@ -97,36 +98,8 @@
     return Math.max(20, Math.round(width / ((px || FONT_PX) * 0.6)));
   }
 
-  function styleType(pre, px) {
-    pre.style.fontSize = (px || FONT_PX) + 'px';
-    pre.style.lineHeight = '1.2';
-  }
-
-  // The profile photo carries its own wrapper markup so it can stay circular.
-  function setupImagePeek(wrapper) {
-    const img = wrapper.querySelector('img');
-    const pre = wrapper.querySelector('.ascii-peek-text');
-    if (!img || !pre) return;
-    const explicitCols = parseInt(wrapper.dataset.asciiCols || '0', 10);
-    const invert = wrapper.dataset.asciiInvert !== undefined;
-    const gamma = parseFloat(wrapper.dataset.asciiGamma || '1');
-    let rendered = false;
-
-    const render = async () => {
-      if (rendered) return;
-      await whenReady(img);
-      const cols = explicitCols || colsFor(wrapper.clientWidth);
-      styleType(pre);
-      pre.textContent = sampleToAscii(img, cols, 1, invert, gamma);
-      rendered = true;
-    };
-
-    wrapper.addEventListener('mouseenter', render);
-    wrapper.addEventListener('focusin', render);
-  }
-
-  // Everything else gets an overlay positioned over the element rather than a
-  // wrapper, so the existing inline sizing on each tag is left untouched.
+  // The overlay is positioned over the element rather than wrapping it, so the
+  // element's own sizing is left untouched.
   function attachOverlay(el, live) {
     const parent = el.parentElement;
     if (!parent) return;
@@ -189,17 +162,22 @@
     let cols = 90;
 
     const place = () => {
+      const w = el.offsetWidth, h = el.offsetHeight;
       pre.style.left = el.offsetLeft + 'px';
       pre.style.top = el.offsetTop + 'px';
-      pre.style.width = el.offsetWidth + 'px';
-      pre.style.height = el.offsetHeight + 'px';
+      pre.style.width = w + 'px';
+      pre.style.height = h + 'px';
       pre.style.borderRadius = getComputedStyle(el).borderRadius;
-      cols = colsFor(el.offsetWidth, fontPx);
-      styleType(pre, fontPx);
-      if (maskImg && maskImg.complete) {
-        const aspect = el.offsetWidth / el.offsetHeight;
-        applyBlockMask(cols, rowsFor(cols, aspect), aspect);
-      }
+
+      cols = colsFor(w, fontPx);
+      const rows = rowsFor(cols, w / h);
+      // Derive the type metrics from the box and the grid rather than from the
+      // nominal font size: rounding cols/rows otherwise leaves the text short of
+      // the bottom edge, and the mask blocks stop lining up with the characters.
+      pre.style.fontSize = (w / cols / 0.6) + 'px';
+      pre.style.lineHeight = (h / rows) + 'px';
+
+      if (maskImg && maskImg.complete) applyBlockMask(cols, rows, w / h);
     };
 
     const paint = () => {
@@ -217,7 +195,7 @@
       paint();
     };
 
-    el.addEventListener('mouseenter', async () => {
+    const show = async () => {
       await whenReady(el);
       if (maskImg) await whenReady(maskImg);
       place();
@@ -227,12 +205,22 @@
       } else {
         paint();
       }
-    });
+    };
 
-    el.addEventListener('mouseleave', () => {
+    const hide = () => {
       pre.classList.remove('visible');
       if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
-    });
+    };
+
+    if (TOUCH) {
+      el.addEventListener('click', () => {
+        if (pre.classList.contains('visible')) hide();
+        else show();
+      });
+    } else {
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('mouseleave', hide);
+    }
 
     window.addEventListener('resize', () => {
       if (pre.classList.contains('visible')) place();
@@ -241,7 +229,6 @@
 
 
   function eligibleImage(img) {
-    if (img.closest('[data-ascii-peek]')) return false;
     if (img.dataset.asciiMask) return false;
     const src = img.getAttribute('src') || '';
     if (/\.svg($|\?)/i.test(src)) return false;
@@ -252,12 +239,13 @@
   }
 
   function init() {
-    document.querySelectorAll('[data-ascii-peek]').forEach(setupImagePeek);
     document.querySelectorAll('img[data-ascii-mask]').forEach((img) => {
       if (img.complete) attachOverlay(img, false);
       else img.addEventListener('load', () => attachOverlay(img, false), { once: true });
     });
-    document.querySelectorAll('video').forEach((v) => attachOverlay(v, true));
+    // Videos are hover-only: on touch there is no hover, and tapping a clip to
+    // freeze it into ASCII is not what anyone expects from a playing video.
+    if (!TOUCH) document.querySelectorAll('video').forEach((v) => attachOverlay(v, true));
     document.querySelectorAll('img').forEach((img) => {
       const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
       if (img.complete) attach();

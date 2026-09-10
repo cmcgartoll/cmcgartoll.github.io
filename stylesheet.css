@@ -81,3 +81,25 @@ h1 {
 .ascii-overlay.visible {
   opacity: 1;
 }
+
+/* Phones: the photo eats half a narrow screen at 200px, and two side-by-side
+   clips end up too small to read. */
+@media (max-width: 600px) {
+  #pfp-fig,
+  #pfp {
+    width: 130px;
+    height: 130px;
+  }
+
+  .clips {
+    display: block;
+  }
+
+  .clips video {
+    width: 100%;
+  }
+
+  .clips video + video {
+    margin-top: 0.5rem;
+  }
+}
