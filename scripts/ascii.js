@@ -109,10 +109,15 @@
     const invert = data.asciiInvert !== undefined ? true : INVERT;
     const gamma = data.asciiGamma ? parseFloat(data.asciiGamma) : GAMMA;
     const fontPx = data.asciiFont ? parseFloat(data.asciiFont) : FONT_PX;
+    // A fixed column count keeps the same level of detail at any display size,
+    // scaling the characters with the element instead of the grid.
+    const fixedCols = data.asciiCols ? parseInt(data.asciiCols, 10) : 0;
 
     const pre = document.createElement('pre');
     pre.className = 'ascii-overlay';
     pre.setAttribute('aria-hidden', 'true');
+    const span = document.createElement('span');
+    pre.appendChild(span);
 
     // A segmentation mask clips the overlay to the subject so the rest of the
     // photo shows through. The mask is quantized to the character grid first —
@@ -160,6 +165,8 @@
     parent.appendChild(pre);
 
     let cols = 90;
+    let rows = 45;
+    let fitted = false;
 
     const place = () => {
       const w = el.offsetWidth, h = el.offsetHeight;
@@ -169,8 +176,10 @@
       pre.style.height = h + 'px';
       pre.style.borderRadius = getComputedStyle(el).borderRadius;
 
-      cols = colsFor(w, fontPx);
-      const rows = rowsFor(cols, w / h);
+      cols = fixedCols || colsFor(w, fontPx);
+      rows = rowsFor(cols, w / h);
+      fitted = false;
+      pre.style.letterSpacing = '0px';
       // Derive the type metrics from the box and the grid rather than from the
       // nominal font size: rounding cols/rows otherwise leaves the text short of
       // the bottom edge, and the mask blocks stop lining up with the characters.
@@ -182,7 +191,27 @@
 
     const paint = () => {
       const aspect = el.offsetWidth / el.offsetHeight;
-      pre.textContent = sampleToAscii(el, cols, aspect, invert, gamma);
+      span.textContent = sampleToAscii(el, cols, aspect, invert, gamma);
+      if (!fitted) fit();
+    };
+
+    // Font metrics vary between platforms, so the nominal size can leave the
+    // grid short of the box — a band of bare background along one edge where
+    // the mask expects characters. Measure what actually rendered and correct.
+    const fit = () => {
+      const w = el.offsetWidth, h = el.offsetHeight;
+      if (!w || !h || !span.textContent) return;
+
+      const box = span.getBoundingClientRect();
+      if (box.height > 1) {
+        const lh = parseFloat(pre.style.lineHeight) || (h / rows);
+        pre.style.lineHeight = (lh * h / box.height) + 'px';
+      }
+      const after = span.getBoundingClientRect();
+      if (after.width > 1) {
+        pre.style.letterSpacing = ((w - after.width) / cols) + 'px';
+      }
+      fitted = true;
     };
 
     let raf = null;
@@ -222,9 +251,19 @@
       el.addEventListener('mouseleave', hide);
     }
 
-    window.addEventListener('resize', () => {
-      if (pre.classList.contains('visible')) place();
-    });
+    // Re-measure on anything that can change the rendered type size: window
+    // resize, orientation change, and pinch-zoom (visualViewport).
+    const relayout = () => {
+      if (!pre.classList.contains('visible')) return;
+      place();
+      if (!live) paint();
+    };
+
+    window.addEventListener('resize', relayout);
+    window.addEventListener('orientationchange', relayout);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', relayout);
+    }
   }
 
 
