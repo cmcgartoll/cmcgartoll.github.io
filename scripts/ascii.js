@@ -106,7 +106,9 @@
     if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
 
     const data = el.dataset || {};
-    const invert = data.asciiInvert !== undefined ? true : INVERT;
+    // Explicit data-ascii-invert="false" must be able to turn this off; a bare
+    // presence check would silently fall back to the global default.
+    const invert = data.asciiInvert !== undefined ? data.asciiInvert !== 'false' : INVERT;
     const gamma = data.asciiGamma ? parseFloat(data.asciiGamma) : GAMMA;
     const fontPx = data.asciiFont ? parseFloat(data.asciiFont) : FONT_PX;
     // A fixed column count keeps the same level of detail at any display size,

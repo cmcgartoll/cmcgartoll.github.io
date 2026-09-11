@@ -1,3 +1,7 @@
+:root {
+  --blue: #0162fd;
+}
+
 body {
   max-width: 42rem;
   margin: 0 auto;
@@ -14,18 +18,22 @@ h1 {
 
 /* Photo floats so the intro text wraps beside it; the caption is absolute so it
    does not add to the float's height and push that wrap point down. */
+/* content-box sizing: the image stays 200px and the border grows outward, so
+   the float's right edge — the border's outer edge — lines up with the content
+   column, and therefore with the right video below it. */
 #pfp-fig {
   float: right;
   position: relative;
   width: 200px;
   height: 200px;
   margin: 0 0 1rem 1rem;
+  border: 8px solid var(--blue);
 }
 
 #pfp {
   display: block;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -55,8 +63,11 @@ h1 {
   gap: 0.5rem;
 }
 
+/* flex: 1 rather than width: 50% — two 50% children plus the gap overflow the
+   row, pushing the right clip past the content edge the photo aligns to. */
 .clips video {
-  width: 50%;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 /* ASCII hover overlay. */
@@ -88,11 +99,16 @@ h1 {
   opacity: 1;
 }
 
+/* The profile photo's ASCII fills its silhouette with the border's blue. */
+#pfp-fig .ascii-overlay {
+  background: var(--blue);
+  color: #ffffff;
+}
+
 /* Phones: the photo eats half a narrow screen at 200px, and two side-by-side
    clips end up too small to read. */
 @media (max-width: 600px) {
-  #pfp-fig,
-  #pfp {
+  #pfp-fig {
     width: 130px;
     height: 130px;
   }
