@@ -10,11 +10,35 @@ body {
   font-family: 'Source Sans 3', system-ui, sans-serif;
 }
 
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
 h1 {
   font-size: inherit;
   font-weight: 400;
   margin: 0 0 1rem;
 }
+
+/* the page you are on is filled; the other is a plain link. Both carry the
+   same padding so swapping pages cannot shift the line. The nav sits outside
+   the blue-link treatment: the filled box is what marks position here. */
+h1 a,
+h1 .current {
+  display: inline-block;
+  padding: 0.05em 0.35em;
+}
+
+h1 a {
+  color: inherit;
+}
+
+h1 .current {
+  background: var(--blue);
+  color: #ffffff;
+}
+
 
 /* Photo floats so the intro text wraps beside it; the caption is absolute so it
    does not add to the float's height and push that wrap point down. */
@@ -37,15 +61,40 @@ h1 {
   object-fit: cover;
 }
 
+/* Revealed with the ASCII, on hover or tap. Absolute so it never affects the
+   float's height; pops out into the right margin beside the photo. */
 #pfp-fig figcaption {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 0.25rem;
-  line-height: 1.2;
-  text-align: center;
+  top: -8px;
+  left: 100%;
+  width: 13rem;
+  /* one border-width of air between the frame and the text */
+  margin-left: 8px;
+  padding: 0.6rem 0.75rem 0.6rem 0;
+  box-sizing: border-box;
+  line-height: 1.35;
+  text-align: left;
   font-style: italic;
+  background: var(--blue);
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+}
+
+/* Not enough margin to pop out sideways: drop it under the photo instead. */
+@media (max-width: 1150px) {
+  #pfp-fig figcaption {
+    top: 100%;
+    left: auto;
+    right: -8px;
+    margin-left: 0;
+    margin-top: 8px;
+    width: 20rem;
+  }
+}
+
+#pfp-fig.ascii-on figcaption {
+  opacity: 1;
 }
 
 .lead-in {
@@ -68,6 +117,9 @@ h1 {
 .clips video {
   flex: 1 1 0;
   min-width: 0;
+  /* border-box so each frame grows inward and the row still fits the column */
+  box-sizing: border-box;
+  border: 8px solid var(--blue);
 }
 
 /* ASCII hover overlay. */
@@ -99,8 +151,9 @@ h1 {
   opacity: 1;
 }
 
-/* The profile photo's ASCII fills its silhouette with the border's blue. */
-#pfp-fig .ascii-overlay {
+/* ASCII fills with the border's blue, characters in white. */
+#pfp-fig .ascii-overlay,
+.clips .ascii-overlay {
   background: var(--blue);
   color: #ffffff;
 }
@@ -111,6 +164,11 @@ h1 {
   #pfp-fig {
     width: 130px;
     height: 130px;
+  }
+
+  /* no room for the note beside a 130px photo, and tapping is for the ASCII */
+  #pfp-fig figcaption {
+    display: none;
   }
 
   .clips {

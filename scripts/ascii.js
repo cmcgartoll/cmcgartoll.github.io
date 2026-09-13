@@ -171,9 +171,14 @@
     let fitted = false;
 
     const place = () => {
-      const w = el.offsetWidth, h = el.offsetHeight;
-      pre.style.left = el.offsetLeft + 'px';
-      pre.style.top = el.offsetTop + 'px';
+      // inset by any border so a framed element keeps its frame visible
+      const cs = getComputedStyle(el);
+      const bl = parseFloat(cs.borderLeftWidth) || 0;
+      const bt = parseFloat(cs.borderTopWidth) || 0;
+      const w = el.clientWidth || el.offsetWidth;
+      const h = el.clientHeight || el.offsetHeight;
+      pre.style.left = (el.offsetLeft + bl) + 'px';
+      pre.style.top = (el.offsetTop + bt) + 'px';
       pre.style.width = w + 'px';
       pre.style.height = h + 'px';
       pre.style.borderRadius = getComputedStyle(el).borderRadius;
@@ -231,6 +236,7 @@
       if (maskImg) await whenReady(maskImg);
       place();
       pre.classList.add('visible');
+      parent.classList.add('ascii-on');
       if (live) {
         if (raf === null) raf = requestAnimationFrame(draw);
       } else {
@@ -240,6 +246,7 @@
 
     const hide = () => {
       pre.classList.remove('visible');
+      parent.classList.remove('ascii-on');
       if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
     };
 
