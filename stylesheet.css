@@ -15,6 +15,15 @@ a {
   text-decoration: none;
 }
 
+/* An inline link's hit area is only as tall as its text, so with line-height
+   1.6 there is a dead band above and below it. Vertical padding fills that in
+   without affecting layout -- padding on an inline box does not move lines. */
+p a,
+li a {
+  padding-top: 0.12em;
+  padding-bottom: 0.12em;
+}
+
 h1 {
   font-size: inherit;
   font-weight: 400;
@@ -32,6 +41,14 @@ h1 .current {
 
 h1 a {
   color: inherit;
+}
+
+/* the nav link's box is invisible, so its target reads as smaller than the
+   filled one beside it; showing the box on hover makes the two match */
+h1 a:hover,
+h1 a:focus-visible {
+  background: var(--blue);
+  color: #ffffff;
 }
 
 h1 .current {
