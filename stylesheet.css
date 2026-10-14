@@ -78,6 +78,9 @@ h1 .current {
   background: var(--blue);
   color: #ffffff;
   opacity: 0;
+  /* opacity alone still intercepts the cursor: without this the hidden note
+     sits over the text below the photo and swallows hover on those links */
+  pointer-events: none;
   transition: opacity .25s ease-in-out;
 }
 
