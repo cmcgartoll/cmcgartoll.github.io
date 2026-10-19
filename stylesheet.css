@@ -143,6 +143,11 @@ h1 .current {
   /* border-box so each frame grows inward and the row still fits the column */
   box-sizing: border-box;
   border: 8px solid var(--blue);
+  /* The element's height and the video's own aspect ratio round to slightly
+     different values, leaving a sub-pixel letterbox strip. cover crops instead
+     of letterboxing, and the blue ground hides anything that still rounds out. */
+  object-fit: cover;
+  background: var(--blue);
 }
 
 /* ASCII hover overlay. */

@@ -237,11 +237,10 @@
       place();
       pre.classList.add('visible');
       parent.classList.add('ascii-on');
-      if (live) {
-        if (raf === null) raf = requestAnimationFrame(draw);
-      } else {
-        paint();
-      }
+      // Always paint one frame up front: rAF is throttled or paused outright in
+      // iOS Low Power Mode, which would otherwise reveal an empty overlay.
+      paint();
+      if (live && raf === null) raf = requestAnimationFrame(draw);
     };
 
     const hide = () => {
