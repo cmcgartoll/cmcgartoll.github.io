@@ -250,15 +250,14 @@
     };
 
     if (auto) {
-      // Touch has no hover, so the clips drift in and out of ASCII on their
-      // own. Intervals are randomised per element so the two never sync up.
+      // Touch has no hover, so the overlay drifts in and out on its own.
       const rand = (lo, hi) => lo + Math.random() * (hi - lo);
       const loop = () => {
         setTimeout(() => {
           if (document.hidden) return loop();
           show();
-          setTimeout(() => { hide(); loop(); }, rand(2500, 5000));
-        }, rand(3000, 9000));
+          setTimeout(() => { hide(); loop(); }, rand(3000, 5500));
+        }, rand(2500, 6000));
       };
       loop();
     } else if (TOUCH) {
@@ -298,18 +297,21 @@
   }
 
   function init() {
-    document.querySelectorAll('img[data-ascii-mask]').forEach((img) => {
-      if (img.complete) attachOverlay(img, false);
-      else img.addEventListener('load', () => attachOverlay(img, false), { once: true });
-    });
-    // Hover drives the clips on desktop; on touch they cycle by themselves,
-    // unless the viewer has asked for reduced motion.
     const calm = window.matchMedia &&
                  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.querySelectorAll('video').forEach((v) => {
-      if (!TOUCH) attachOverlay(v, true, false);
-      else if (!calm) attachOverlay(v, true, true);
+
+    // The photo carries the effect on touch: it fades in and out on its own,
+    // since there is no hover and a still image samples reliably everywhere.
+    const auto = TOUCH && !calm;
+    document.querySelectorAll('img[data-ascii-mask]').forEach((img) => {
+      if (img.complete) attachOverlay(img, false, auto);
+      else img.addEventListener('load', () => attachOverlay(img, false, auto), { once: true });
     });
+
+    // Videos are hover-only. iOS cannot reliably read a hardware-decoded video
+    // frame back out of a canvas, so the overlay comes up blank there.
+    if (!TOUCH) document.querySelectorAll('video').forEach((v) => attachOverlay(v, true, false));
+
     document.querySelectorAll('img').forEach((img) => {
       const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
       if (img.complete) attach();
