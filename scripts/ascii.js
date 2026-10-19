@@ -100,7 +100,7 @@
 
   // The overlay is positioned over the element rather than wrapping it, so the
   // element's own sizing is left untouched.
-  function attachOverlay(el, live) {
+  function attachOverlay(el, live, auto) {
     const parent = el.parentElement;
     if (!parent) return;
     if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
@@ -250,7 +250,19 @@
       if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
     };
 
-    if (TOUCH) {
+    if (auto) {
+      // Touch has no hover, so the clips drift in and out of ASCII on their
+      // own. Intervals are randomised per element so the two never sync up.
+      const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+      const loop = () => {
+        setTimeout(() => {
+          if (document.hidden) return loop();
+          show();
+          setTimeout(() => { hide(); loop(); }, rand(2500, 5000));
+        }, rand(3000, 9000));
+      };
+      loop();
+    } else if (TOUCH) {
       el.addEventListener('click', () => {
         if (pre.classList.contains('visible')) hide();
         else show();
@@ -291,9 +303,14 @@
       if (img.complete) attachOverlay(img, false);
       else img.addEventListener('load', () => attachOverlay(img, false), { once: true });
     });
-    // Videos are hover-only: on touch there is no hover, and tapping a clip to
-    // freeze it into ASCII is not what anyone expects from a playing video.
-    if (!TOUCH) document.querySelectorAll('video').forEach((v) => attachOverlay(v, true));
+    // Hover drives the clips on desktop; on touch they cycle by themselves,
+    // unless the viewer has asked for reduced motion.
+    const calm = window.matchMedia &&
+                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('video').forEach((v) => {
+      if (!TOUCH) attachOverlay(v, true, false);
+      else if (!calm) attachOverlay(v, true, true);
+    });
     document.querySelectorAll('img').forEach((img) => {
       const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
       if (img.complete) attach();

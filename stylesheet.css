@@ -137,6 +137,9 @@ h1 .current {
 .clips video {
   flex: 1 1 0;
   min-width: 0;
+  /* block, not inline: an inline video sits on the text baseline, which leaves
+     a strip of line-box space around it once the row stacks on mobile */
+  display: block;
   /* border-box so each frame grows inward and the row still fits the column */
   box-sizing: border-box;
   border: 8px solid var(--blue);
