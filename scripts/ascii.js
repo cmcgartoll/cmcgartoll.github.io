@@ -10,6 +10,10 @@
   const MIN_SIZE = 100;
   const TOUCH = window.matchMedia && window.matchMedia('(hover: none)').matches;
 
+  // Elements that cycle together, keyed by group name. One timer drives each
+  // group, so everything in it fades in and out on the same beat.
+  const groups = {};
+
   const CELL_ASPECT = 0.5;
 
   function rowsFor(cols, aspect) {
@@ -255,16 +259,7 @@
     };
 
     if (auto) {
-      // Touch has no hover, so the overlay drifts in and out on its own.
-      const rand = (lo, hi) => lo + Math.random() * (hi - lo);
-      const loop = () => {
-        setTimeout(() => {
-          if (document.hidden) return loop();
-          show();
-          setTimeout(() => { hide(); loop(); }, rand(3000, 5500));
-        }, rand(2500, 6000));
-      };
-      loop();
+      (groups[auto] || (groups[auto] = [])).push({ show, hide });
     } else if (TOUCH) {
       el.addEventListener('click', () => {
         if (pre.classList.contains('visible')) hide();
@@ -301,23 +296,44 @@
     return img.offsetWidth >= MIN_SIZE && img.offsetHeight >= MIN_SIZE;
   }
 
+  function startGroups() {
+    const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+    Object.keys(groups).forEach((name) => {
+      const members = groups[name];
+      const loop = () => {
+        setTimeout(() => {
+          if (document.hidden) return loop();
+          members.forEach((m) => m.show());
+          setTimeout(() => {
+            members.forEach((m) => m.hide());
+            loop();
+          }, rand(4000, 6500));
+        }, rand(3000, 6000));
+      };
+      loop();
+    });
+  }
+
   function init() {
-    // Touch has no hover, so everything cycles on its own there. The reveal is
-    // a cross-fade, which is what reduced-motion guidance asks for in place of
-    // movement, so it is not gated on that preference.
+    // The photo stays on hover, or tap where there is no hover.
     document.querySelectorAll('img[data-ascii-mask]').forEach((img) => {
-      if (img.complete) attachOverlay(img, false, TOUCH);
-      else img.addEventListener('load', () => attachOverlay(img, false, TOUCH), { once: true });
+      if (img.complete) attachOverlay(img, false, false);
+      else img.addEventListener('load', () => attachOverlay(img, false, false), { once: true });
     });
 
+    // The clips cycle on their own on touch, both on the same beat. The reveal
+    // is a cross-fade, which is what reduced-motion guidance asks for in place
+    // of movement, so it is not gated on that preference.
     document.querySelectorAll('video:not([data-ascii-skip])')
-      .forEach((v) => attachOverlay(v, true, TOUCH));
+      .forEach((v) => attachOverlay(v, true, TOUCH ? 'clips' : false));
 
     document.querySelectorAll('img').forEach((img) => {
       const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
       if (img.complete) attach();
       else img.addEventListener('load', attach, { once: true });
     });
+
+    startGroups();
   }
 
   if (document.readyState === 'loading') {
