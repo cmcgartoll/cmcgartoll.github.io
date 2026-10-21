@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ASCII video diagnostic</title>
+    <style>
+      body { font: 14px/1.5 -apple-system, system-ui, sans-serif; margin: 0; padding: 1rem; }
+      h2 { font-size: 15px; margin: 1.4rem 0 .4rem; }
+      #log { white-space: pre-wrap; font: 12px/1.45 ui-monospace, Menlo, monospace;
+             background: #f4f4f4; padding: .75rem; border-radius: 4px; }
+      .ok { color: #0a7a2f; } .bad { color: #c62828; } .warn { color: #b26a00; }
+      video { width: 100%; max-width: 340px; display: block; border: 4px solid #0162fd; }
+      pre.art { font: 4px/1 ui-monospace, Menlo, monospace; background: #0162fd; color: #fff;
+                margin: .5rem 0; white-space: pre; overflow: hidden; max-width: 340px; }
+      button { font: inherit; padding: .5rem 1rem; margin: .5rem .5rem .5rem 0; }
+    </style>
+  </head>
+  <body>
+    <h2>1. The video</h2>
+    <video id="v" autoplay loop muted playsinline preload="metadata"
+           poster="images/poster_wbd.jpg">
+      <source src="videos/wbd_teaser_web.mp4" type="video/mp4">
+    </video>
+    <button id="go">Re-run tests</button>
+    <button id="play">Force play()</button>
+
+    <h2>2. What happened</h2>
+    <div id="log">running…</div>
+
+    <h2>3. Sampled result (should look like the clip)</h2>
+    <pre class="art" id="art"></pre>
+
+    <script>
+      var L = document.getElementById('log');
+      var lines = [];
+      function say(cls, msg) { lines.push('<span class="' + cls + '">' + msg + '</span>'); L.innerHTML = lines.join('\n'); }
+
+      function run() {
+        lines = [];
+        var v = document.getElementById('v');
+
+        say('', 'userAgent: ' + navigator.userAgent);
+        say('', 'devicePixelRatio: ' + window.devicePixelRatio);
+        say('', 'hover:none matches: ' + (window.matchMedia('(hover: none)').matches));
+        say('', 'reduced motion: ' + (window.matchMedia('(prefers-reduced-motion: reduce)').matches));
+        say('', '---');
+
+        say(v.paused ? 'bad' : 'ok', 'paused: ' + v.paused + (v.paused ? '  <- autoplay blocked (Low Power Mode?)' : ''));
+        say(v.readyState >= 2 ? 'ok' : 'bad', 'readyState: ' + v.readyState + ' (need >= 2 for a decoded frame)');
+        say(v.videoWidth ? 'ok' : 'bad', 'videoWidth x videoHeight: ' + v.videoWidth + ' x ' + v.videoHeight);
+        say('', 'currentTime: ' + v.currentTime.toFixed(2));
+        say('', '---');
+
+        if (!v.videoWidth) {
+          say('bad', 'STOP: no frame dimensions, so nothing can be sampled.');
+          return;
+        }
+
+        // draw the video into a canvas
+        var cols = 80, rows = 30;
+        var c = document.createElement('canvas');
+        c.width = cols; c.height = rows;
+        var ctx = c.getContext('2d', { willReadFrequently: true });
+        try {
+          ctx.drawImage(v, 0, 0, cols, rows);
+          say('ok', 'drawImage(video): no exception');
+        } catch (e) {
+          say('bad', 'drawImage THREW: ' + e.name + ' - ' + e.message);
+          return;
+        }
+
+        var data;
+        try {
+          data = ctx.getImageData(0, 0, cols, rows).data;
+          say('ok', 'getImageData: no exception');
+        } catch (e) {
+          say('bad', 'getImageData THREW: ' + e.name + ' - ' + e.message +
+                     (e.name === 'SecurityError' ? '  <- canvas tainted' : ''));
+          return;
+        }
+
+        // are the pixels actually varied, or is it a blank frame?
+        var min = 255, max = 0, sum = 0, n = cols * rows, opaque = 0;
+        for (var i = 0; i < n; i++) {
+          var k = i * 4;
+          var lum = (data[k] * 0.2126 + data[k+1] * 0.7152 + data[k+2] * 0.0722);
+          if (lum < min) min = lum;
+          if (lum > max) max = lum;
+          sum += lum;
+          if (data[k+3] > 0) opaque++;
+        }
+        say('', 'pixels: min=' + min.toFixed(0) + ' max=' + max.toFixed(0) +
+                ' mean=' + (sum/n).toFixed(0) + ' opaque=' + opaque + '/' + n);
+
+        if (opaque === 0) {
+          say('bad', 'VERDICT: canvas is fully transparent - the frame never reached it.');
+        } else if (max - min < 6) {
+          say('bad', 'VERDICT: frame is a flat colour (' + (sum/n).toFixed(0) +
+                     ') - drawImage succeeded but produced no picture.');
+        } else {
+          say('ok', 'VERDICT: real picture data. Video -> canvas WORKS on this device.');
+        }
+
+        // render it so you can see it
+        var RAMP = ' .:-=+*#%@', out = '';
+        for (var y = 0; y < rows; y++) {
+          for (var x = 0; x < cols; x++) {
+            var kk = (y * cols + x) * 4;
+            var l = (data[kk]*0.2126 + data[kk+1]*0.7152 + data[kk+2]*0.0722) / 255;
+            out += RAMP[Math.round(Math.pow(l, 0.55) * (RAMP.length - 1))];
+          }
+          out += '\n';
+        }
+        document.getElementById('art').textContent = out;
+      }
+
+      document.getElementById('go').onclick = run;
+      document.getElementById('play').onclick = function () {
+        document.getElementById('v').play().then(function () { say('ok', 'play() resolved'); run(); })
+          .catch(function (e) { say('bad', 'play() rejected: ' + e.name + ' - ' + e.message); });
+      };
+      window.addEventListener('load', function () { setTimeout(run, 1500); });
+    </script>
+  </body>
+</html>
