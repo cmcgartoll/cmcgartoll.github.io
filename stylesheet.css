@@ -56,6 +56,11 @@ h1 .current {
   color: #ffffff;
 }
 
+/* margins rather than a run of &nbsp; so the gap can tighten on narrow screens */
+.sep {
+  margin: 0 1.1rem;
+}
+
 
 /* Photo floats so the intro text wraps beside it; the caption is absolute so it
    does not add to the float's height and push that wrap point down. */
@@ -134,7 +139,8 @@ h1 .current {
 
 /* flex: 1 rather than width: 50% — two 50% children plus the gap overflow the
    row, pushing the right clip past the content edge the photo aligns to. */
-.clips video {
+.clips > video,
+.clips > .feature {
   flex: 1 1 0;
   min-width: 0;
   /* block, not inline: an inline video sits on the text baseline, which leaves
@@ -148,6 +154,50 @@ h1 .current {
      of letterboxing, and the blue ground hides anything that still rounds out. */
   object-fit: cover;
   background: var(--blue);
+}
+
+/* Linked teaser: the anchor carries the frame, the video fills it. */
+.feature {
+  position: relative;
+  display: block;
+  line-height: 0;
+}
+
+.feature video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sits above the ASCII overlay, so hovering shows the pattern with the work
+   named over it. No background of its own -- the ASCII is the backdrop. */
+.feature-title {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease-in-out;
+}
+
+/* Solid blue behind the words so the ASCII pattern cannot run through them. */
+.feature-title span {
+  background: var(--blue);
+  color: #ffffff;
+  padding: 0.08em 0.22em;
+}
+
+.feature:hover .feature-title,
+.feature:focus-visible .feature-title {
+  opacity: 1;
 }
 
 /* ASCII hover overlay. */
@@ -189,9 +239,21 @@ h1 .current {
 /* Phones: the photo eats half a narrow screen at 200px, and two side-by-side
    clips end up too small to read. */
 @media (max-width: 600px) {
+  /* smaller photo and a tighter separator keep the header on one line */
   #pfp-fig {
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
+    margin-left: 0.75rem;
+  }
+
+  .sep {
+    margin: 0 0.35rem;
+  }
+
+  /* both together, so the two pages still measure identically */
+  h1 a,
+  h1 .current {
+    padding: 0.05em 0.2em;
   }
 
   /* no room for the note beside a 130px photo, and tapping is for the ASCII */
@@ -203,11 +265,12 @@ h1 .current {
     display: block;
   }
 
-  .clips video {
+  .clips > video,
+  .clips > .feature {
     width: 100%;
   }
 
-  .clips video + video {
+  .clips > * + * {
     margin-top: 0.5rem;
   }
 }

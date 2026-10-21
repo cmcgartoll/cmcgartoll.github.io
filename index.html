@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
-    <link rel="stylesheet" href="stylesheet.css?v=fad5e3c">
-    <script src="scripts/ascii.js?v=fad5e3c" defer></script>
+    <link rel="stylesheet" href="stylesheet.css?v=1fd1629">
+    <script src="scripts/ascii.js?v=1fd1629" defer></script>
   </head>
 
   <body>
@@ -24,7 +24,7 @@
         </figcaption>
       </figure>
 
-      <h1><span class="current">Conor Mc Gartoll</span> &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; <a href="/reading/">Reading</a></h1>
+      <h1><span class="current">Conor Mc Gartoll</span> <span class="sep">|</span> <a href="/reading/">Reading</a></h1>
 
       <p>
         I'm a researcher and engineer deeply interested in foundational robot dexterity and enabling it through simulation. I studied mechanical engineering with a concentration in CS at UCLA and am currently pursuing a master's in CS at UCSD.
@@ -48,12 +48,20 @@
 
     <main>
       <div class="clips">
-        <video autoplay loop muted playsinline data-ascii-invert="false" data-ascii-gamma="0.55" preload="metadata" poster="images/poster_floating_hand.jpg">
-          <source src="videos/floating_hand_policy_web.mp4" type="video/mp4">
-        </video>
-        <video autoplay loop muted playsinline data-ascii-invert="false" data-ascii-gamma="0.55" preload="metadata" poster="images/poster_towel_fold.jpg">
-          <source src="videos/towel_fold_web.mp4" type="video/mp4">
-        </video>
+        <a class="feature" href="https://wholebodydex.com" aria-label="Whole-Body Dexterity">
+          <video autoplay loop muted playsinline data-ascii-invert="false" data-ascii-gamma="0.55"
+                 preload="metadata" poster="images/poster_wbd.jpg">
+            <source src="videos/wbd_teaser_web.mp4" type="video/mp4">
+          </video>
+          <span class="feature-title"><span>Whole-Body Dexterity</span></span>
+        </a>
+        <div class="feature">
+          <video autoplay loop muted playsinline data-ascii-invert="false" data-ascii-gamma="0.55"
+                 preload="metadata" poster="images/poster_floating_hand.jpg">
+            <source src="videos/floating_hand_policy_web.mp4" type="video/mp4">
+          </video>
+          <span class="feature-title"><span>Coming Soon...</span></span>
+        </div>
       </div>
     </main>
 

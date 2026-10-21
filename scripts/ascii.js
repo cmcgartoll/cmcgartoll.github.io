@@ -310,7 +310,10 @@
 
     // Videos are hover-only. iOS cannot reliably read a hardware-decoded video
     // frame back out of a canvas, so the overlay comes up blank there.
-    if (!TOUCH) document.querySelectorAll('video').forEach((v) => attachOverlay(v, true, false));
+    if (!TOUCH) {
+      document.querySelectorAll('video:not([data-ascii-skip])')
+        .forEach((v) => attachOverlay(v, true, false));
+    }
 
     document.querySelectorAll('img').forEach((img) => {
       const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
