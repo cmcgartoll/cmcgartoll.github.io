@@ -252,8 +252,10 @@
     };
 
     let timer = null;
+    let fadeOut = null;
 
     const startLoop = () => {
+      clearTimeout(fadeOut);
       if (timer !== null) return;
       timer = setInterval(() => {
         if (!document.hidden) paint();
@@ -281,7 +283,13 @@
     const hide = () => {
       pre.classList.remove('visible');
       parent.classList.remove('ascii-on');
-      stopLoop();
+      // Keep sampling through the fade. Freezing the last frame here makes the
+      // cross-fade jump, because the clip underneath has moved on by the time
+      // the overlay clears; tracking it means both sides show the same moment.
+      if (!live) return stopLoop();
+      const ms = parseFloat(getComputedStyle(pre).transitionDuration) * 1000 || 0;
+      clearTimeout(fadeOut);
+      fadeOut = setTimeout(stopLoop, ms + 80);
     };
 
     if (auto) {
