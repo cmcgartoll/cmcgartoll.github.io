@@ -221,14 +221,19 @@
       fitted = true;
     };
 
-    let raf = null;
-    let lastDraw = 0;
+    let timer = null;
 
-    const draw = (now) => {
-      raf = requestAnimationFrame(draw);
-      if (now - lastDraw < FRAME_MS) return;
-      lastDraw = now;
-      paint();
+    const startLoop = () => {
+      if (timer !== null) return;
+      timer = setInterval(() => {
+        if (!document.hidden) paint();
+      }, FRAME_MS);
+    };
+
+    const stopLoop = () => {
+      if (timer === null) return;
+      clearInterval(timer);
+      timer = null;
     };
 
     const show = async () => {
@@ -240,13 +245,13 @@
       // Always paint one frame up front: rAF is throttled or paused outright in
       // iOS Low Power Mode, which would otherwise reveal an empty overlay.
       paint();
-      if (live && raf === null) raf = requestAnimationFrame(draw);
+      if (live) startLoop();
     };
 
     const hide = () => {
       pre.classList.remove('visible');
       parent.classList.remove('ascii-on');
-      if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+      stopLoop();
     };
 
     if (auto) {
@@ -297,23 +302,16 @@
   }
 
   function init() {
-    const calm = window.matchMedia &&
-                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // The photo carries the effect on touch: it fades in and out on its own,
-    // since there is no hover and a still image samples reliably everywhere.
-    const auto = TOUCH && !calm;
+    // Touch has no hover, so everything cycles on its own there. The reveal is
+    // a cross-fade, which is what reduced-motion guidance asks for in place of
+    // movement, so it is not gated on that preference.
     document.querySelectorAll('img[data-ascii-mask]').forEach((img) => {
-      if (img.complete) attachOverlay(img, false, auto);
-      else img.addEventListener('load', () => attachOverlay(img, false, auto), { once: true });
+      if (img.complete) attachOverlay(img, false, TOUCH);
+      else img.addEventListener('load', () => attachOverlay(img, false, TOUCH), { once: true });
     });
 
-    // Videos are hover-only. iOS cannot reliably read a hardware-decoded video
-    // frame back out of a canvas, so the overlay comes up blank there.
-    if (!TOUCH) {
-      document.querySelectorAll('video:not([data-ascii-skip])')
-        .forEach((v) => attachOverlay(v, true, false));
-    }
+    document.querySelectorAll('video:not([data-ascii-skip])')
+      .forEach((v) => attachOverlay(v, true, TOUCH));
 
     document.querySelectorAll('img').forEach((img) => {
       const attach = () => { if (eligibleImage(img)) attachOverlay(img, false); };
