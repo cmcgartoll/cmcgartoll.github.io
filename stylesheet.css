@@ -185,7 +185,7 @@ h1 .current {
   text-align: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1.1s ease-in-out;
+  transition: opacity .2s ease-in-out;
 }
 
 /* Solid blue behind the words so the ASCII pattern cannot run through them. */
@@ -223,7 +223,7 @@ h1 .current {
   text-align: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1.1s ease-in-out;
+  transition: opacity .2s ease-in-out;
 }
 
 .ascii-overlay.visible {
@@ -239,6 +239,15 @@ h1 .current {
 
 /* Phones: the photo eats half a narrow screen at 200px, and two side-by-side
    clips end up too small to read. */
+/* The clips drift in and out on touch, so the fade is slow there. Hover stays
+   immediate on desktop. */
+@media (hover: none) {
+  .ascii-overlay,
+  .feature-title {
+    transition-duration: 1.1s;
+  }
+}
+
 @media (max-width: 600px) {
   /* smaller photo and a tighter separator keep the header on one line */
   #pfp-fig {

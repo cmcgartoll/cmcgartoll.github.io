@@ -97,6 +97,9 @@
   // A cell is roughly 0.6em wide; the glyph sits below ~0.28 of the line box,
   // which is the empty band trimmed off the top edge of a masked silhouette.
   const GLYPH_TOP_GAP = 0.28;
+  // Extra height the ASCII block is stretched to, so glyph ink meets the
+  // frame instead of leaving a hairline of background at top and bottom.
+  const INK_BLEED = 2.2;
 
   function colsFor(width, px) {
     return Math.max(20, Math.round(width / ((px || FONT_PX) * 0.6)));
@@ -179,10 +182,19 @@
       const cs = getComputedStyle(el);
       const bl = parseFloat(cs.borderLeftWidth) || 0;
       const bt = parseFloat(cs.borderTopWidth) || 0;
-      const w = el.clientWidth || el.offsetWidth;
-      const h = el.clientHeight || el.offsetHeight;
-      pre.style.left = (el.offsetLeft + bl) + 'px';
-      pre.style.top = (el.offsetTop + bt) + 'px';
+      let left = el.offsetLeft + bl;
+      let top = el.offsetTop + bt;
+      let w = el.clientWidth || el.offsetWidth;
+      let h = el.clientHeight || el.offsetHeight;
+      // A video's box can fall a fraction short of its container (its aspect
+      // ratio rarely divides evenly), leaving a sliver of the frame showing
+      // past the overlay. Snap to the container when it is that close.
+      const pw = parent.clientWidth, ph = parent.clientHeight;
+      if (Math.abs(pw - w) <= 2 && Math.abs(ph - h) <= 2 && left <= 2 && top <= 2) {
+        left = 0; top = 0; w = pw; h = ph;
+      }
+      pre.style.left = left + 'px';
+      pre.style.top = top + 'px';
       pre.style.width = w + 'px';
       pre.style.height = h + 'px';
       pre.style.borderRadius = getComputedStyle(el).borderRadius;
@@ -213,14 +225,28 @@
       const w = el.offsetWidth, h = el.offsetHeight;
       if (!w || !h || !span.textContent) return;
 
+      // 1. normalise the block to the box height
       const box = span.getBoundingClientRect();
       if (box.height > 1) {
         const lh = parseFloat(pre.style.lineHeight) || (h / rows);
         pre.style.lineHeight = (lh * h / box.height) + 'px';
       }
-      const after = span.getBoundingClientRect();
-      if (after.width > 1) {
-        pre.style.letterSpacing = ((w - after.width) / cols) + 'px';
+
+      // 2. glyph ink stops short of its line box, so the first and last rows
+      //    leave a hairline of background against the frame. Stretch the block
+      //    by that much; at ~1% the distortion is not visible.
+      span.style.display = 'block';
+      span.style.transformOrigin = 'center';
+      span.style.transform = 'none';
+      const inked = span.getBoundingClientRect();
+      if (inked.height > 1) {
+        span.style.transform = 'scaleY(' + ((h + INK_BLEED) / inked.height) + ')';
+      }
+
+      // 3. spread the columns to fill the width exactly
+      const wide = span.getBoundingClientRect();
+      if (wide.width > 1) {
+        pre.style.letterSpacing = ((w - wide.width) / cols) + 'px';
       }
       fitted = true;
     };
